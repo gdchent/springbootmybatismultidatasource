@@ -1,0 +1,30 @@
+spring:
+  http:
+    encoding:
+      charset: utf-8
+      force: false
+      enabled: true
+  datasource:
+    primary:
+      jdbc-url: jdbc:mysql://localhost/gdchent?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      username: root
+      password: gdchent0330
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    secondary:
+      jdbc-url: jdbc:mysql://localhost/gdchent2?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      username: root
+      password: gdchent0330
+      driver-class-name: com.mysql.cj.jdbc.Driver
+logging:
+        level:
+          cn.gdchent.springbootmybatismultidatasource: debug
+
+#mybatis:
+#  configuration:
+#    map-underscore-to-camel-case: true
+# 生成的mapper文件都是放在同一个文件下 不用配置
+#mybatis:
+#    mapper-locations: classpath:generator/*.xml
+server:
+  #   自定义端口号：8888
+  port: 8888
