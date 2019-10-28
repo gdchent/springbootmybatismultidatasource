@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSessionFactory
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.mybatis.spring.SqlSessionFactoryBean
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.boot.jta.atomikos.AtomikosDataSourceBean
 
 /**
  * @auther:gdchent
@@ -23,28 +24,29 @@ import org.springframework.beans.factory.annotation.Qualifier
 class SecondaryDataSourceConfig {
 
     @Bean(name = ["secondaryDataSource"])
-    @ConfigurationProperties(prefix = "spring.datasource.secondary") //读取application.yml文件对应的secondary
+    @ConfigurationProperties(prefix = "secondarydb") //读取application.yml文件对应的secondary
     fun testDataSource(): DataSource {
-        return DataSourceBuilder.create().build()
+        return AtomikosDataSourceBean() //分布式任务
     }
 
     @Bean(name = ["secondarySqlSessionFactory"])
     @Throws(Exception::class)
-    fun testSqlSessionFactory(@Qualifier("secondaryDataSource") dataSource: DataSource): SqlSessionFactory? {
+    fun secondarySqlSessionFactory(@Qualifier("secondaryDataSource") dataSource: DataSource): SqlSessionFactory? {
         val bean = SqlSessionFactoryBean()
         bean.setDataSource(dataSource)
+        bean.setTypeAliasesPackage("cn.gdchent.springbootmybatismultidatasource.generator.gdchent2") //使用分布式任务要加上这行
         //bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mybatis/mapper/test1/*.xml"));
         return bean.getObject()
     }
 
     @Bean(name = ["secondaryTransactionManager"])
-    fun testTransactionManager(@Qualifier("secondaryDataSource") dataSource: DataSource): DataSourceTransactionManager {
+    fun secondaryTransactionManager(@Qualifier("secondaryDataSource") dataSource: DataSource): DataSourceTransactionManager {
         return DataSourceTransactionManager(dataSource)
     }
 
     @Bean(name = ["secondarySqlSessionTemplate"])
     @Throws(Exception::class)
-    fun testSqlSessionTemplate(@Qualifier("secondarySqlSessionFactory") sqlSessionFactory: SqlSessionFactory): SqlSessionTemplate {
+    fun testSqlSessionTemplate(@Qualifier("secondarySqlSessionFactory") sqlSessionFactory: SqlSessionFactory)  : SqlSessionTemplate  {
         return SqlSessionTemplate(sqlSessionFactory)
     }
 

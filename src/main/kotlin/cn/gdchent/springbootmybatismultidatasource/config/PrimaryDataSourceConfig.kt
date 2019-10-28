@@ -12,6 +12,8 @@ import org.apache.ibatis.session.SqlSessionFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.mybatis.spring.SqlSessionTemplate
+import org.springframework.boot.jta.atomikos.AtomikosDataSourceBean
+
 /**
  * @auther:gdchent
  * @create:2019-10-25 16:40
@@ -25,18 +27,19 @@ import org.mybatis.spring.SqlSessionTemplate
 class PrimaryDataSourceConfig {
 
     @Bean(name = ["primaryDataSource"])
-    @ConfigurationProperties(prefix = "spring.datasource.primary")
+    @ConfigurationProperties(prefix = "primarydb")
     @Primary
     fun testDataSource(): DataSource {
-        return DataSourceBuilder.create().build()
+        return return AtomikosDataSourceBean()  //分布式任务
     }
 
     @Bean(name = ["primarySqlSessionFactory"])
     @Primary
     @Throws(Exception::class)
-    fun testSqlSessionFactory(@Qualifier("primaryDataSource") dataSource: DataSource): SqlSessionFactory? {
+    fun primarySqlSessionFactory(@Qualifier("primaryDataSource") dataSource: DataSource): SqlSessionFactory? {
         val bean = SqlSessionFactoryBean()
         bean.setDataSource(dataSource)
+        bean.setTypeAliasesPackage("cn.gdchent.springbootmybatismultidatasource.generator.gdchent") //分布式任务这里要加上
         //bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mybatis/mapper/test1/*.xml"));
         return bean.getObject()
     }
@@ -44,7 +47,7 @@ class PrimaryDataSourceConfig {
 
     @Bean(name = ["primaryTransactionManager"])
     @Primary
-    fun testTransactionManager(@Qualifier("primaryDataSource") dataSource: DataSource): DataSourceTransactionManager {
+    fun primaryTransactionManager(@Qualifier("primaryDataSource") dataSource: DataSource): DataSourceTransactionManager {
         return DataSourceTransactionManager(dataSource)
     }
 

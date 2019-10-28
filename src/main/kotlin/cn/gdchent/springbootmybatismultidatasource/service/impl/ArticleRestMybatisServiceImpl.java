@@ -11,6 +11,7 @@ import cn.gdchent.springbootmybatismultidatasource.vo.ArticleVO;
 import lombok.extern.slf4j.Slf4j;
 import org.dozer.Mapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -32,16 +33,17 @@ public class ArticleRestMybatisServiceImpl implements ArticleRestMybatisService 
 
     //根据前端传递过来的articlevo对象来保存数据到后台数据库
     @Override
+    @Transactional //分布式任务事务注解 就是如果该方法有异常 这个方法的事务都有异常
     public ArticleVO saveArticle(ArticleVO articleVO) {
 
         Article articlePO=dozerMapper.map(articleVO, Article.class); //这个Article.class是generator目录下的
         articleMapper.insert(articlePO);
         Message message=new Message();
-        message.setName("装逼messageName");
-        message.setContent("装逼内容");
-
+        message.setName("messageName——分布式任务");
+        message.setContent("content-分布式任务");
         //然后通过messageMapper插入数据
         messageMapper.insert(message);
+        int res=4/0 ; //报错
         return articleVO;
     }
 

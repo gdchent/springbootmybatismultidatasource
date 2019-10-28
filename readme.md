@@ -1,46 +1,41 @@
-##### spring boot通过mybatis插件生成mybatisMapper
-详情参见github文档  
-https://github.com/kmaster/better-mybatis-generator 
-![image](https://github.com/gdchent/springbootmybatismultidatasource/blob/master/effectImg/指定mybatis插件生成map文件的目录.png)
-![image](https://github.com/gdchent/springbootmybatismultidatasource/blob/master/effectImg/测试数据源跟驱动.png)
-![image](https://github.com/gdchent/springbootmybatismultidatasource/blob/master/effectImg/选择要连接的数据库.png)
-##### spring boot mybatis多数据源配置
-1.**application.yml**文件配置mysql
-```yml
-spring:
-  http:
-    encoding:
-      charset: utf-8
-      force: false
-      enabled: true
-  datasource:
-    primary:
-      jdbc-url: jdbc:mysql://localhost/gdchent?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
-      username: root
-      password: gdchent0330
-      driver-class-name: com.mysql.cj.jdbc.Driver
-    secondary:
-      jdbc-url: jdbc:mysql://localhost/gdchent2?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
-      username: root
-      password: gdchent0330
-      driver-class-name: com.mysql.cj.jdbc.Driver
-logging:
-        level:
-          cn.gdchent.springbootmybatismultidatasource: debug
-
-#mybatis:
-#  configuration:
-#    map-underscore-to-camel-case: true
-# 生成的mapper文件都是放在同一个文件下 不用配置
-#mybatis
-#    mapper-locations: classpath:generator/*.xml
-server:
-  #   自定义端口号：8888
-  port: 8888
-
+#### spring boot 整合jta-atomikos
+第一步引入maven依赖:
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-jta-atomikos</artifactId>
+</dependency>
 ```
-2.主数据源配置
-1.**PrimaryDataSourceConfig.java**文件  
+第二步引入双数据源配置
+```yml
+primarydb:
+  uniqueResourceName: primary
+  xaDataSourceClassName: com.mysql.cj.jdbc.jdbc2.optional.MysqlXADataSource
+  xaProperties:
+    url: jdbc:mysql://localhost/gdchent?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    user: root
+    password: gdchent0330
+  exclusiveConnectionMode: true
+  minPoolSize: 3
+  maxPoolSize: 10
+  testQuery: SELECT 1 from dual #由于采用HikiriCP，用于检测数据库连接是否存活。
+
+secondarydb:
+  uniqueResourceName: secondary
+  xaDataSourceClassName: com.mysql.cj.jdbc.jdbc2.optional.MysqlXADataSource
+  xaProperties:
+    url: jdbc:mysql://localhost/gdchent2?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    user: root
+    password: gdchent0330
+  exclusiveConnectionMode: true
+  minPoolSize: 3
+  maxPoolSize: 10
+  testQuery: SELECT 1 from dual #由于采用HikiriCP，用于检测数据库连接是否存活
+```
+
+##### 配置多数据源以及事务管理
+
+数据源一：primarydb
 ```kotlin
 package cn.gdchent.springbootmybatismultidatasource.config
 
@@ -56,6 +51,8 @@ import org.apache.ibatis.session.SqlSessionFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.mybatis.spring.SqlSessionTemplate
+import org.springframework.boot.jta.atomikos.AtomikosDataSourceBean
+
 /**
  * @auther:gdchent
  * @create:2019-10-25 16:40
@@ -69,18 +66,19 @@ import org.mybatis.spring.SqlSessionTemplate
 class PrimaryDataSourceConfig {
 
     @Bean(name = ["primaryDataSource"])
-    @ConfigurationProperties(prefix = "spring.datasource.primary")
+    @ConfigurationProperties(prefix = "primarydb")
     @Primary
     fun testDataSource(): DataSource {
-        return DataSourceBuilder.create().build()
+        return return AtomikosDataSourceBean()  //分布式任务
     }
 
     @Bean(name = ["primarySqlSessionFactory"])
     @Primary
     @Throws(Exception::class)
-    fun testSqlSessionFactory(@Qualifier("primaryDataSource") dataSource: DataSource): SqlSessionFactory? {
+    fun primarySqlSessionFactory(@Qualifier("primaryDataSource") dataSource: DataSource): SqlSessionFactory? {
         val bean = SqlSessionFactoryBean()
         bean.setDataSource(dataSource)
+        bean.setTypeAliasesPackage("cn.gdchent.springbootmybatismultidatasource.generator.gdchent") //分布式任务这里要加上
         //bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mybatis/mapper/test1/*.xml"));
         return bean.getObject()
     }
@@ -88,7 +86,7 @@ class PrimaryDataSourceConfig {
 
     @Bean(name = ["primaryTransactionManager"])
     @Primary
-    fun testTransactionManager(@Qualifier("primaryDataSource") dataSource: DataSource): DataSourceTransactionManager {
+    fun primaryTransactionManager(@Qualifier("primaryDataSource") dataSource: DataSource): DataSourceTransactionManager {
         return DataSourceTransactionManager(dataSource)
     }
 
@@ -100,9 +98,7 @@ class PrimaryDataSourceConfig {
     }
 }
 ```
-
-2.**SecondaryDataSourceConfig.java**文件:
-
+数据源二:secondarydb
 ```kotlin
 package cn.gdchent.springbootmybatismultidatasource.config
 
@@ -117,6 +113,7 @@ import org.apache.ibatis.session.SqlSessionFactory
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.mybatis.spring.SqlSessionFactoryBean
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.boot.jta.atomikos.AtomikosDataSourceBean
 
 /**
  * @auther:gdchent
@@ -129,98 +126,79 @@ import org.springframework.beans.factory.annotation.Qualifier
 class SecondaryDataSourceConfig {
 
     @Bean(name = ["secondaryDataSource"])
-    @ConfigurationProperties(prefix = "spring.datasource.secondary")
+    @ConfigurationProperties(prefix = "secondarydb") //读取application.yml文件对应的secondary
     fun testDataSource(): DataSource {
-        return DataSourceBuilder.create().build()
+        return AtomikosDataSourceBean() //分布式任务
     }
 
     @Bean(name = ["secondarySqlSessionFactory"])
     @Throws(Exception::class)
-    fun testSqlSessionFactory(@Qualifier("secondaryDataSource") dataSource: DataSource): SqlSessionFactory? {
+    fun secondarySqlSessionFactory(@Qualifier("secondaryDataSource") dataSource: DataSource): SqlSessionFactory? {
         val bean = SqlSessionFactoryBean()
         bean.setDataSource(dataSource)
+        bean.setTypeAliasesPackage("cn.gdchent.springbootmybatismultidatasource.generator.gdchent2") //使用分布式任务要加上这行
         //bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mybatis/mapper/test1/*.xml"));
         return bean.getObject()
     }
 
     @Bean(name = ["secondaryTransactionManager"])
-    fun testTransactionManager(@Qualifier("secondaryDataSource") dataSource: DataSource): DataSourceTransactionManager {
+    fun secondaryTransactionManager(@Qualifier("secondaryDataSource") dataSource: DataSource): DataSourceTransactionManager {
         return DataSourceTransactionManager(dataSource)
     }
 
     @Bean(name = ["secondarySqlSessionTemplate"])
     @Throws(Exception::class)
-    fun testSqlSessionTemplate(@Qualifier("secondarySqlSessionFactory") sqlSessionFactory: SqlSessionFactory): SqlSessionTemplate {
+    fun testSqlSessionTemplate(@Qualifier("secondarySqlSessionFactory") sqlSessionFactory: SqlSessionFactory)  : SqlSessionTemplate  {
         return SqlSessionTemplate(sqlSessionFactory)
     }
+
 }
 ```
-**SpringbootmybatismultidatasourceApplication.kotlin**文件
-```kotlin
-package cn.gdchent.springbootmybatismultidatasource
+事务管理器  
+```java
+package cn.gdchent.springbootmybatismultidatasource.config;
 
-import org.mybatis.spring.annotation.MapperScan
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
-import org.dozer.DozerBeanMapper
-import org.dozer.Mapper
-import org.springframework.context.annotation.Bean
-
+import com.atomikos.icatch.jta.UserTransactionImp;
+import com.atomikos.icatch.jta.UserTransactionManager;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.jta.JtaTransactionManager;
+import javax.transaction.TransactionManager;
+import javax.transaction.UserTransaction;
 
 /**
  * @auther:gdchent
- * @create:2019-10-25 16:30
+ * @create:2019-10-28 12:42
  * @Description:
  */
-@SpringBootApplication
-//@MapperScan("cn.gdchent.springbootmybatismultidatasource.generator")  //本来如果只是进行单个mybatis数据配置的时候
-class SpringbootmybatismultidatasourceApplication{
-    //不加以下代码运行会报错
-    //https://stackoverflow.com/questions/48867307/spring-boot-controller-required-a-bean-of-type-org-dozer-mapper-that-could-not
-    @Bean
-    fun mapper(): Mapper {
-        return DozerBeanMapper()
+@Configuration
+@EnableTransactionManagement
+public class XATransactionManagerConfig {
+
+    @Bean(name = "userTransaction")
+    public UserTransaction userTransaction() throws Throwable {
+        UserTransactionImp userTransactionImp = new UserTransactionImp();
+        userTransactionImp.setTransactionTimeout(10000);
+        return userTransactionImp;
+    }
+
+    @Bean(name = "atomikosTransactionManager", initMethod = "init", destroyMethod = "close")
+    public TransactionManager atomikosTransactionManager() throws Throwable {
+        UserTransactionManager userTransactionManager = new UserTransactionManager();
+        userTransactionManager.setForceShutdown(false);
+        return userTransactionManager;
+    }
+
+    @Bean(name = "transactionManager")
+    @DependsOn({ "userTransaction", "atomikosTransactionManager" })
+    public PlatformTransactionManager transactionManager() throws Throwable {
+        return new JtaTransactionManager(userTransaction(),atomikosTransactionManager());
     }
 }
-
-fun main(args: Array<String>) {
-    runApplication<SpringbootmybatismultidatasourceApplication>(*args)
-}
-
-
 ```
-注意:如果不在SpringbootmybatismultidatasourceApplication.kt文件中添加以下代码
-```kotlin
- @Bean
-    fun mapper(): Mapper {
-        return DozerBeanMapper()
-    }
-```
-报错如下:
-![image](https://github.com/gdchent/springbootmybatismultidatasource/blob/master/effectImg/mybatis多源数据库配置可能会报以下错误图.png)
-解决方案如下: 
-https://stackoverflow.com/questions/48867307/spring-boot-controller-required-a-bean-of-type-org-dozer-mapper-that-could-not
-
-如果运行报以下错误:
-
-![image](https://github.com/gdchent/springbootmybatismultidatasource/blob/master/effectImg/mybatis设置生成mapper.xml文件在Java或者kotlin文件夹有效.png)
-
-解决办法（需在pom.xml文件下加以下代码加载build标签里面）：
-
-```xml
-  <!-- 设置支持在kotlin文件夹下 xml文件有效-->
-        <resources>
-            <resource>
-                <directory>src/main/kotlin</directory>
-                <filtering>false</filtering>
-                <includes>
-                    <include>**/*.xml</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-            </resource>
-        </resources>
-```
+spring boot @Transactional注解事务不回滚不起作用无效  
+https://blog.csdn.net/zdyueguanyun/article/details/80236401
 
