@@ -198,5 +198,29 @@ fun main(args: Array<String>) {
 ```
 报错如下:
 ![image](https://github.com/gdchent/springbootmybatismultidatasource/blob/master/effectImg/mybatis多源数据库配置可能会报以下错误图.png)
-解决方案如下:
+解决方案如下: 
 https://stackoverflow.com/questions/48867307/spring-boot-controller-required-a-bean-of-type-org-dozer-mapper-that-could-not
+
+如果运行报以下错误:
+
+![image](https://github.com/gdchent/springbootmybatismultidatasource/blob/master/effectImg/mybatis设置生成mapper.xml文件在Java或者kotlin文件夹有效.png)
+
+解决办法（需在pom.xml文件下加以下代码加载build标签里面）：
+
+```xml
+  <!-- 设置支持在kotlin文件夹下 xml文件有效-->
+        <resources>
+            <resource>
+                <directory>src/main/kotlin</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+```
+
