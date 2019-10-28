@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 class SecondaryDataSourceConfig {
 
     @Bean(name = ["secondaryDataSource"])
-    @ConfigurationProperties(prefix = "spring.datasource.secondary")
+    @ConfigurationProperties(prefix = "spring.datasource.secondary") //读取application.yml文件对应的secondary
     fun testDataSource(): DataSource {
         return DataSourceBuilder.create().build()
     }

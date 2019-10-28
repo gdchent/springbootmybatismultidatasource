@@ -1,3 +1,4 @@
+
 spring:
   http:
     encoding:
@@ -16,15 +17,7 @@ spring:
       password: gdchent0330
       driver-class-name: com.mysql.cj.jdbc.Driver
 logging:
-        level:
-          cn.gdchent.springbootmybatismultidatasource: debug
-
-#mybatis:
-#  configuration:
-#    map-underscore-to-camel-case: true
-# 生成的mapper文件都是放在同一个文件下 不用配置
-#mybatis:
-#    mapper-locations: classpath:generator/*.xml
+  level:
+    cn.gdchent.springbootmybatismultidatasource: debug
 server:
-  #   自定义端口号：8888
   port: 8888

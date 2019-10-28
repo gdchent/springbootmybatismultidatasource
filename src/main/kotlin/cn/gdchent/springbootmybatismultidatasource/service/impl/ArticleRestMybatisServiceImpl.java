@@ -23,10 +23,10 @@ public class ArticleRestMybatisServiceImpl implements ArticleRestMybatisService 
     private Mapper dozerMapper;
 
     @Resource
-    private ArticleMapper articleMapper ;
+    private ArticleMapper articleMapper ; //通过mybatis的插件生成的mapper对象
 
     @Resource
-    private MessageMapper messageMapper ;
+    private MessageMapper messageMapper ;//通过mybatis的插件生成的mapper对象
 
 
     @Override
