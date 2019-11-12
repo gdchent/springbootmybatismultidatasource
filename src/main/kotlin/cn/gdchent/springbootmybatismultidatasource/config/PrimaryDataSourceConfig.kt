@@ -24,15 +24,14 @@ import org.mybatis.spring.SqlSessionTemplate
          )
 class PrimaryDataSourceConfig {
 
+    //@Primary  //整个工程只允许有一个Primary的datasource
     @Bean(name = ["primaryDataSource"])
     @ConfigurationProperties(prefix = "spring.datasource.primary")
-    @Primary
     fun testDataSource(): DataSource {
         return DataSourceBuilder.create().build()
     }
-
+    //@Primary
     @Bean(name = ["primarySqlSessionFactory"])
-    @Primary
     @Throws(Exception::class)
     fun testSqlSessionFactory(@Qualifier("primaryDataSource") dataSource: DataSource): SqlSessionFactory? {
         val bean = SqlSessionFactoryBean()
@@ -41,15 +40,13 @@ class PrimaryDataSourceConfig {
         return bean.getObject()
     }
 
-
+    //@Primary
     @Bean(name = ["primaryTransactionManager"])
-    @Primary
     fun testTransactionManager(@Qualifier("primaryDataSource") dataSource: DataSource): DataSourceTransactionManager {
         return DataSourceTransactionManager(dataSource)
     }
-
+    //@Primary
     @Bean(name = ["primarySqlSessionTemplate"])
-    @Primary
     @Throws(Exception::class)
     fun testSqlSessionTemplate(@Qualifier("primarySqlSessionFactory") sqlSessionFactory: SqlSessionFactory): SqlSessionTemplate {
         return SqlSessionTemplate(sqlSessionFactory)

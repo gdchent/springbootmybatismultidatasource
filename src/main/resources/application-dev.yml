@@ -1,0 +1,57 @@
+
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  http:
+    encoding:
+      charset: utf-8
+      force: false
+      enabled: true
+  datasource:
+    primary:
+      jdbc-url: jdbc:mysql://localhost/gdchent?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      username: root
+      password: gdchent0330
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    secondary:
+      jdbc-url: jdbc:mysql://localhost/gdchent2?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      username: root
+      password: gdchent0330
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+  main:
+    allow-bean-definition-overriding: false  # 表示是否可以在datasouceConfig里面设置允许bean标签重命名 默认为false
+logging:
+  level:
+    cn.gdchent.springbootmybatismultidatasource: debug
+
+primarydb:
+    uniqueResourceName: primary
+    xaDataSourceClassName: com.mysql.cj.jdbc.MysqlXADataSource
+    xaProperties:
+      url: jdbc:mysql://localhost/gdchent?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      user: root
+      password: gdchent0330
+    exclusiveConnectionMode: true
+    minPoolSize: 3
+    maxPoolSize: 10
+    testQuery: SELECT 1 from dual #由于采用HikiriCP，用于检测数据库连接是否存活。
+secondarydb:
+      uniqueResourceName: secondary
+      xaDataSourceClassName: com.mysql.cj.jdbc.MysqlXADataSource
+      xaProperties:
+        url: jdbc:mysql://localhost/gdchent2?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+        user: root
+        password: gdchent0330
+      exclusiveConnectionMode: true
+      minPoolSize: 3
+      maxPoolSize: 10
+      testQuery: SELECT 1 from dual #由于采用HikiriCP，用于检测数据库连接是否存活。
+mybatis:
+  configuration:
+    mapUnderscoreToCamelCase: true
+
+server:
+  port: 8866
+

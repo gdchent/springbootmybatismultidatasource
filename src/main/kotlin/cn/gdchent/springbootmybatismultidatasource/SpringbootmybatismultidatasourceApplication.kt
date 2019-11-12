@@ -6,7 +6,7 @@ import org.springframework.boot.runApplication
 import org.dozer.DozerBeanMapper
 import org.dozer.Mapper
 import org.springframework.context.annotation.Bean
-
+import  com.mysql.cj.jdbc.MysqlXADataSource;
 
 /**
  * @auther:gdchent
@@ -26,4 +26,5 @@ class SpringbootmybatismultidatasourceApplication{
 
 fun main(args: Array<String>) {
     runApplication<SpringbootmybatismultidatasourceApplication>(*args)
+    val xaDataSource=MysqlXADataSource()
 }

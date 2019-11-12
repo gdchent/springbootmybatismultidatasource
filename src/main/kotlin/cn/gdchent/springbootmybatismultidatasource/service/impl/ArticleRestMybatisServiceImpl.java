@@ -11,6 +11,7 @@ import cn.gdchent.springbootmybatismultidatasource.vo.ArticleVO;
 import lombok.extern.slf4j.Slf4j;
 import org.dozer.Mapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -31,6 +32,8 @@ public class ArticleRestMybatisServiceImpl implements ArticleRestMybatisService 
 
 
     //根据前端传递过来的articlevo对象来保存数据到后台数据库
+    //@Transactional(value = "primaryTransactionManager") // 明确指定它的事务管理器 ==>config->primaryDataSourceConfig
+    @Transactional
     @Override
     public ArticleVO saveArticle(ArticleVO articleVO) {
 
