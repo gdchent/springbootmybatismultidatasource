@@ -10,12 +10,12 @@ spring:
       enabled: true
   datasource:
     primary:
-      jdbc-url: jdbc:mysql://localhost/gdchent?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      jdbc-url: jdbc:mysql://localhost:3306/gdchent?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
       username: root
       password: gdchent0330
       driver-class-name: com.mysql.cj.jdbc.Driver
     secondary:
-      jdbc-url: jdbc:mysql://localhost/gdchent2?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      jdbc-url: jdbc:mysql://localhost:3306/gdchent2?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
       username: root
       password: gdchent0330
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -30,7 +30,7 @@ primarydb:
     uniqueResourceName: primary
     xaDataSourceClassName: com.mysql.cj.jdbc.MysqlXADataSource
     xaProperties:
-      url: jdbc:mysql://localhost/gdchent?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      url: jdbc:mysql://localhost:3306/gdchent?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
       user: root
       password: gdchent0330
     exclusiveConnectionMode: true
@@ -41,7 +41,7 @@ secondarydb:
       uniqueResourceName: secondary
       xaDataSourceClassName: com.mysql.cj.jdbc.MysqlXADataSource
       xaProperties:
-        url: jdbc:mysql://localhost/gdchent2?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+        url: jdbc:mysql://localhost:3306/gdchent3?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
         user: root
         password: gdchent0330
       exclusiveConnectionMode: true

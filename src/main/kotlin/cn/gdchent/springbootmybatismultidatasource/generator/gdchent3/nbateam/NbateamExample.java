@@ -1,9 +1,9 @@
-package cn.gdchent.springbootmybatismultidatasource.generator.gdchent2;
+package cn.gdchent.springbootmybatismultidatasource.generator.gdchent3.nbateam;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessageExample {
+public class NbateamExample {
     protected String orderByClause;
 
     protected boolean distinct;
@@ -14,7 +14,7 @@ public class MessageExample {
 
     private Long offset;
 
-    public MessageExample() {
+    public NbateamExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -124,203 +124,203 @@ public class MessageExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andIdIsNull() {
-            addCriterion("id is null");
+        public Criteria andNbaIdIsNull() {
+            addCriterion("nba_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andIdIsNotNull() {
-            addCriterion("id is not null");
+        public Criteria andNbaIdIsNotNull() {
+            addCriterion("nba_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIdEqualTo(Long value) {
-            addCriterion("id =", value, "id");
+        public Criteria andNbaIdEqualTo(Integer value) {
+            addCriterion("nba_id =", value, "nbaId");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotEqualTo(Long value) {
-            addCriterion("id <>", value, "id");
+        public Criteria andNbaIdNotEqualTo(Integer value) {
+            addCriterion("nba_id <>", value, "nbaId");
             return (Criteria) this;
         }
 
-        public Criteria andIdGreaterThan(Long value) {
-            addCriterion("id >", value, "id");
+        public Criteria andNbaIdGreaterThan(Integer value) {
+            addCriterion("nba_id >", value, "nbaId");
             return (Criteria) this;
         }
 
-        public Criteria andIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("id >=", value, "id");
+        public Criteria andNbaIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("nba_id >=", value, "nbaId");
             return (Criteria) this;
         }
 
-        public Criteria andIdLessThan(Long value) {
-            addCriterion("id <", value, "id");
+        public Criteria andNbaIdLessThan(Integer value) {
+            addCriterion("nba_id <", value, "nbaId");
             return (Criteria) this;
         }
 
-        public Criteria andIdLessThanOrEqualTo(Long value) {
-            addCriterion("id <=", value, "id");
+        public Criteria andNbaIdLessThanOrEqualTo(Integer value) {
+            addCriterion("nba_id <=", value, "nbaId");
             return (Criteria) this;
         }
 
-        public Criteria andIdIn(List<Long> values) {
-            addCriterion("id in", values, "id");
+        public Criteria andNbaIdIn(List<Integer> values) {
+            addCriterion("nba_id in", values, "nbaId");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotIn(List<Long> values) {
-            addCriterion("id not in", values, "id");
+        public Criteria andNbaIdNotIn(List<Integer> values) {
+            addCriterion("nba_id not in", values, "nbaId");
             return (Criteria) this;
         }
 
-        public Criteria andIdBetween(Long value1, Long value2) {
-            addCriterion("id between", value1, value2, "id");
+        public Criteria andNbaIdBetween(Integer value1, Integer value2) {
+            addCriterion("nba_id between", value1, value2, "nbaId");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotBetween(Long value1, Long value2) {
-            addCriterion("id not between", value1, value2, "id");
+        public Criteria andNbaIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("nba_id not between", value1, value2, "nbaId");
             return (Criteria) this;
         }
 
-        public Criteria andContentIsNull() {
-            addCriterion("content is null");
+        public Criteria andNbaNameIsNull() {
+            addCriterion("nba_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andContentIsNotNull() {
-            addCriterion("content is not null");
+        public Criteria andNbaNameIsNotNull() {
+            addCriterion("nba_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andContentEqualTo(String value) {
-            addCriterion("content =", value, "content");
+        public Criteria andNbaNameEqualTo(String value) {
+            addCriterion("nba_name =", value, "nbaName");
             return (Criteria) this;
         }
 
-        public Criteria andContentNotEqualTo(String value) {
-            addCriterion("content <>", value, "content");
+        public Criteria andNbaNameNotEqualTo(String value) {
+            addCriterion("nba_name <>", value, "nbaName");
             return (Criteria) this;
         }
 
-        public Criteria andContentGreaterThan(String value) {
-            addCriterion("content >", value, "content");
+        public Criteria andNbaNameGreaterThan(String value) {
+            addCriterion("nba_name >", value, "nbaName");
             return (Criteria) this;
         }
 
-        public Criteria andContentGreaterThanOrEqualTo(String value) {
-            addCriterion("content >=", value, "content");
+        public Criteria andNbaNameGreaterThanOrEqualTo(String value) {
+            addCriterion("nba_name >=", value, "nbaName");
             return (Criteria) this;
         }
 
-        public Criteria andContentLessThan(String value) {
-            addCriterion("content <", value, "content");
+        public Criteria andNbaNameLessThan(String value) {
+            addCriterion("nba_name <", value, "nbaName");
             return (Criteria) this;
         }
 
-        public Criteria andContentLessThanOrEqualTo(String value) {
-            addCriterion("content <=", value, "content");
+        public Criteria andNbaNameLessThanOrEqualTo(String value) {
+            addCriterion("nba_name <=", value, "nbaName");
             return (Criteria) this;
         }
 
-        public Criteria andContentLike(String value) {
-            addCriterion("content like", value, "content");
+        public Criteria andNbaNameLike(String value) {
+            addCriterion("nba_name like", value, "nbaName");
             return (Criteria) this;
         }
 
-        public Criteria andContentNotLike(String value) {
-            addCriterion("content not like", value, "content");
+        public Criteria andNbaNameNotLike(String value) {
+            addCriterion("nba_name not like", value, "nbaName");
             return (Criteria) this;
         }
 
-        public Criteria andContentIn(List<String> values) {
-            addCriterion("content in", values, "content");
+        public Criteria andNbaNameIn(List<String> values) {
+            addCriterion("nba_name in", values, "nbaName");
             return (Criteria) this;
         }
 
-        public Criteria andContentNotIn(List<String> values) {
-            addCriterion("content not in", values, "content");
+        public Criteria andNbaNameNotIn(List<String> values) {
+            addCriterion("nba_name not in", values, "nbaName");
             return (Criteria) this;
         }
 
-        public Criteria andContentBetween(String value1, String value2) {
-            addCriterion("content between", value1, value2, "content");
+        public Criteria andNbaNameBetween(String value1, String value2) {
+            addCriterion("nba_name between", value1, value2, "nbaName");
             return (Criteria) this;
         }
 
-        public Criteria andContentNotBetween(String value1, String value2) {
-            addCriterion("content not between", value1, value2, "content");
+        public Criteria andNbaNameNotBetween(String value1, String value2) {
+            addCriterion("nba_name not between", value1, value2, "nbaName");
             return (Criteria) this;
         }
 
-        public Criteria andNameIsNull() {
-            addCriterion("`name` is null");
+        public Criteria andNbaPlayerIsNull() {
+            addCriterion("nba_player is null");
             return (Criteria) this;
         }
 
-        public Criteria andNameIsNotNull() {
-            addCriterion("`name` is not null");
+        public Criteria andNbaPlayerIsNotNull() {
+            addCriterion("nba_player is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNameEqualTo(String value) {
-            addCriterion("`name` =", value, "name");
+        public Criteria andNbaPlayerEqualTo(String value) {
+            addCriterion("nba_player =", value, "nbaPlayer");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotEqualTo(String value) {
-            addCriterion("`name` <>", value, "name");
+        public Criteria andNbaPlayerNotEqualTo(String value) {
+            addCriterion("nba_player <>", value, "nbaPlayer");
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThan(String value) {
-            addCriterion("`name` >", value, "name");
+        public Criteria andNbaPlayerGreaterThan(String value) {
+            addCriterion("nba_player >", value, "nbaPlayer");
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThanOrEqualTo(String value) {
-            addCriterion("`name` >=", value, "name");
+        public Criteria andNbaPlayerGreaterThanOrEqualTo(String value) {
+            addCriterion("nba_player >=", value, "nbaPlayer");
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThan(String value) {
-            addCriterion("`name` <", value, "name");
+        public Criteria andNbaPlayerLessThan(String value) {
+            addCriterion("nba_player <", value, "nbaPlayer");
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThanOrEqualTo(String value) {
-            addCriterion("`name` <=", value, "name");
+        public Criteria andNbaPlayerLessThanOrEqualTo(String value) {
+            addCriterion("nba_player <=", value, "nbaPlayer");
             return (Criteria) this;
         }
 
-        public Criteria andNameLike(String value) {
-            addCriterion("`name` like", value, "name");
+        public Criteria andNbaPlayerLike(String value) {
+            addCriterion("nba_player like", value, "nbaPlayer");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotLike(String value) {
-            addCriterion("`name` not like", value, "name");
+        public Criteria andNbaPlayerNotLike(String value) {
+            addCriterion("nba_player not like", value, "nbaPlayer");
             return (Criteria) this;
         }
 
-        public Criteria andNameIn(List<String> values) {
-            addCriterion("`name` in", values, "name");
+        public Criteria andNbaPlayerIn(List<String> values) {
+            addCriterion("nba_player in", values, "nbaPlayer");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotIn(List<String> values) {
-            addCriterion("`name` not in", values, "name");
+        public Criteria andNbaPlayerNotIn(List<String> values) {
+            addCriterion("nba_player not in", values, "nbaPlayer");
             return (Criteria) this;
         }
 
-        public Criteria andNameBetween(String value1, String value2) {
-            addCriterion("`name` between", value1, value2, "name");
+        public Criteria andNbaPlayerBetween(String value1, String value2) {
+            addCriterion("nba_player between", value1, value2, "nbaPlayer");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotBetween(String value1, String value2) {
-            addCriterion("`name` not between", value1, value2, "name");
+        public Criteria andNbaPlayerNotBetween(String value1, String value2) {
+            addCriterion("nba_player not between", value1, value2, "nbaPlayer");
             return (Criteria) this;
         }
     }

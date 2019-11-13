@@ -3,8 +3,8 @@ package cn.gdchent.springbootmybatismultidatasource.service.impl;
 
 import cn.gdchent.springbootmybatismultidatasource.generator.gdchent.Article;
 import cn.gdchent.springbootmybatismultidatasource.generator.gdchent.ArticleMapper;
-import cn.gdchent.springbootmybatismultidatasource.generator.gdchent2.Message;
-import cn.gdchent.springbootmybatismultidatasource.generator.gdchent2.MessageMapper;
+import cn.gdchent.springbootmybatismultidatasource.generator.gdchent2.message.Message;
+import cn.gdchent.springbootmybatismultidatasource.generator.gdchent2.message.MessageMapper;
 import cn.gdchent.springbootmybatismultidatasource.service.ArticleRestMybatisService;
 import cn.gdchent.springbootmybatismultidatasource.utils.DozerUtils;
 import cn.gdchent.springbootmybatismultidatasource.vo.ArticleVO;

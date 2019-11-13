@@ -23,7 +23,7 @@ import javax.sql.DataSource
 @Configuration
 @EnableConfigurationProperties
 @EnableAutoConfiguration
-@MapperScan(basePackages = ["cn.gdchent.springbootmybatismultidatasource.generator.gdchent2"],
+@MapperScan(basePackages = ["cn.gdchent.springbootmybatismultidatasource.generator.gdchent3"],
         sqlSessionTemplateRef = "secondaryJTASqlSessionTemplate")//注意这里
 class SecondaryDataSourceJTAConfig {
     @Primary
@@ -41,7 +41,7 @@ class SecondaryDataSourceJTAConfig {
         val bean = SqlSessionFactoryBean()
         bean.setDataSource(dataSource)
         //bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*.xml"));
-        bean.setTypeAliasesPackage("cn.gdchent.springbootmybatismultidatasource.generator.gdchent2")   //注意这里
+        bean.setTypeAliasesPackage("cn.gdchent.springbootmybatismultidatasource.generator.gdchent3")   //注意这里
         return bean.getObject()
     }
     @Primary

@@ -17,4 +17,20 @@ public class ResultVO<T> {
 
     //具体数据内容
     private T data;
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+    //函数式泛型 根据参数返回什么类型
+    public static <T> ResultVO<T> success(T data){
+        ResultVO response=new ResultVO();
+        response.setCode(200);
+        response.setMsg("success");
+        response.setData(data);
+        return response ;
+    }
 }

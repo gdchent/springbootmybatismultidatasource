@@ -1,7 +1,5 @@
-package cn.gdchent.springbootmybatismultidatasource.generator.gdchent2;
+package cn.gdchent.springbootmybatismultidatasource.generator.gdchent2.message;
 
-import cn.gdchent.springbootmybatismultidatasource.generator.gdchent2.Message;
-import cn.gdchent.springbootmybatismultidatasource.generator.gdchent2.MessageExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

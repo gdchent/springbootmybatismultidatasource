@@ -223,4 +223,6 @@ https://stackoverflow.com/questions/48867307/spring-boot-controller-required-a-b
             </resource>
         </resources>
 ```
+##### mybatis+jta实现多源分配式数据成功测试通过效果图
+![image](https://github.com/gdchent/springbootmybatismultidatasource/blob/master/effectImg/mybatis+jta实现多源分配式数据成功测试通过.png)
 

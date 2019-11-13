@@ -1,4 +1,4 @@
-package cn.gdchent.springbootmybatismultidatasource.generator.gdchent2;
+package cn.gdchent.springbootmybatismultidatasource.generator.gdchent2.message;
 
 import java.io.Serializable;
 
